@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "identityForm-api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/admin/swagger",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "identityForm-api": "StartDebugging"
+      }
+    }
+  }
+}

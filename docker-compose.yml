@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  dotnet-simplificanacional-api:
+    image: 143638069616.dkr.ecr.sa-east-1.amazonaws.com/dotnet-simplificanacional-api:1.3.3
+    build:
+      context: .
+      dockerfile: src/SimplificaNacional.Api/Dockerfile

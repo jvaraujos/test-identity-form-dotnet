@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Certcer.Application</RootNamespace>
+    <AssemblyName>Certcer.Application</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="FluentValidation" Version="10.3.6" />
+    <PackageReference Include="LazyCache" Version="2.4.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.15" />
+	<PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+	<PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Certcer.Domain\Certcer.Domain.csproj" />
+    <ProjectReference Include="..\Certcer.Infrastructure.Shared\Certcer.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\Certcer.Shared\Certcer.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Features\Brands\Commands\AddEdit\AddEditBrandCommandHandler.ar.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Features\Brands\Commands\Delete\DeleteBrandCommandHandler.ar.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\Catalog\Taxbooks\Ctes\Commands\" />
+    <Folder Include="Features\Catalog\Taxbooks\Nfces\Commands\" />
+    <Folder Include="Features\Catalog\Taxbooks\Nfes\Commands\" />
+    <Folder Include="Validators\Requests\Catalog\" />
+  </ItemGroup>
+
+</Project>

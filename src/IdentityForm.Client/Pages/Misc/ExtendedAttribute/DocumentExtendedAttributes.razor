@@ -1,0 +1,31 @@
+﻿@page "/extended-attributes/{EntityName}/{EntityIdString}"
+@attribute [Authorize(Policy = Permissions.DocumentExtendedAttributes.View)]
+
+@using Certcer.Domain.Entities.Misc
+@using Certcer.Domain.Entities.ExtendedAttributes;
+@using Certcer.Domain.Entities.Misc;
+@using Certcer.Client.Infrastructure.Managers.Identity.Authentication;
+@using Certcer.Shared.Constants.Permission;
+@using Certcer.Client.Infrastructure.Managers.Preferences;
+@using Certcer.Client.Infrastructure.Managers.Identity.Users;
+@using Certcer.Client.Infrastructure.Managers.Identity.Account;
+@using Certcer.Client.Shared.Components;
+@using Certcer.Client.Infrastructure.Authentication;
+@using Certcer.Domain.Entities.ExtendedAttributes
+@namespace Certcer.Client.Pages.Misc.ExtendedAttribute
+
+@inherits ExtendedAttributes<int, int, Document, DocumentExtendedAttribute>
+
+@Inherited()
+
+@code
+{
+    protected override Func<string, int> FromStringToEntityIdTypeConverter => s => int.Parse(s);
+
+    protected override string ExtendedAttributesViewPolicyName => Permissions.DocumentExtendedAttributes.View;
+    protected override string ExtendedAttributesEditPolicyName => Permissions.DocumentExtendedAttributes.Edit;
+    protected override string ExtendedAttributesCreatePolicyName => Permissions.DocumentExtendedAttributes.Create;
+    protected override string ExtendedAttributesDeletePolicyName => Permissions.DocumentExtendedAttributes.Delete;
+    protected override string ExtendedAttributesExportPolicyName => Permissions.DocumentExtendedAttributes.Export;
+    protected override string ExtendedAttributesSearchPolicyName => Permissions.DocumentExtendedAttributes.Search;
+}

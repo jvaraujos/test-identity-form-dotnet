@@ -1,0 +1,51 @@
+image: atlassian/default-image:3
+
+definitions:
+  services:
+    docker:
+      memory: 512
+    docker-with-more-memory:
+      memory: 2048
+      type: docker
+    docker-with-large-memory:
+      memory: 5120
+      type: docker
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build Image and Test
+          services: [docker-with-more-memory]
+          # caches:
+          #   - docker
+          script:
+            - echo "Building and testing..."
+            - IMAGE_NAME=$APP_NAME
+            - docker build -f $DOCKERFILE_PATH -t $APP_NAME .
+            - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
+          artifacts:
+            - "*.tar"
+      - step:
+          name: Push to Production
+          deployment: Production
+          services: [docker-with-more-memory]
+          script:
+            - echo "Pushing to production..."
+            - IMAGE_NAME=$APP_NAME
+            - docker load --input "${IMAGE_NAME}.tar"
+            - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
+            - IMAGE=${DOCKER_REGISTRY_URL}/${IMAGE_NAME}
+            - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
+            - apt-get update && apt-get install -y python3-pip
+            - pip3 install awscli
+            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY_URL
+            - docker push "${IMAGE}:${VERSION}"
+            - IMAGE=${DOCKER_REGISTRY_URL}/${IMAGE_NAME}:${VERSION}
+            - cat /opt/atlassian/pipelines/agent/ssh/id_rsa > id_rsa
+            - chmod 600 id_rsa
+            - ssh -i "id_rsa" -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOSTNAME "sudo mkdir -p /tmp/dockerImages && sudo chmod 777 /tmp/dockerImages"
+            - scp -i "id_rsa" -o StrictHostKeyChecking=no ${IMAGE_NAME}.tar $EC2_USERNAME@$EC2_HOSTNAME:/tmp/dockerImages
+            - ssh -i "id_rsa" -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOSTNAME "docker load -i /tmp/dockerImages/${IMAGE_NAME}.tar"
+            - ssh -i "id_rsa" -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOSTNAME "docker rm -f ${APP_NAME}"
+            - ssh -i "id_rsa" -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOSTNAME "docker run -d -t -i --name ${APP_NAME} -e ASPNETCORE_ENVIRONMENT='Production' -e ASPNETCORE_URLS='https://+:5003' -e ASPNETCORE_Kestrel__Certificates__Default__Path='certificate_prod' -e ASPNETCORE_HTTPS_PORT='https://+:5003' -p 5003:5003 ${IMAGE_NAME}"

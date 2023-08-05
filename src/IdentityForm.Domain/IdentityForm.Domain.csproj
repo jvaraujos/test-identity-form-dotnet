@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<RootNamespace>IdentityForm.Domain</RootNamespace>
+		<AssemblyName>IdentityForm.Domain</AssemblyName>
+		<LangVersion>latest</LangVersion>
+		<VersionPrefix>2.1.26</VersionPrefix>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.8" />
+	</ItemGroup>
+
+</Project>

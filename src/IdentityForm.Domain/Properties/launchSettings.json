@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "MyThreadsMoney.Domain": {
+      "commandName": "Project"
+    }
+  }
+}
